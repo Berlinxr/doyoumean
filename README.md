@@ -45,11 +45,11 @@ Bu sayede sistem, kullanıcı etkileşimleriyle **kademeli olarak kendini geliş
 ## Dosya Yapısı
 
 | 📁 proje/ |
-| ├── domains.json        # Ana (onaylı) domain listesi |
-| ├── domains1.json       # Yedek (öğrenme aşamasında) liste |
-| ├── counter.json        # Domainlerin eşleşme sayısı |
-| ├── ayarlar.py          # API_KEY ve CX_KEY bilgileri |
-| └── main.py             # Ana çalışma dosyası |
+| ├── domains.json | # Ana (onaylı) domain listesi |
+| ├── domains1.json | # Yedek (öğrenme aşamasında) liste |
+| ├── counter.json | # Domainlerin eşleşme sayısı |
+| ├── ayarlar.py | # API_KEY ve CX_KEY bilgileri |
+| └── main.py | # Ana çalışma dosyası |
 
 
 ## Geliştirme Planı
