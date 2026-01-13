@@ -1,55 +1,143 @@
-# dym
+# Proje Ana Alanı
+**Yazılım**
 
-# Kullanıcı Etkileşimine Dayalı, Güvenlik Odaklı Otonom Domain Doğrulama Ve Yönlendirme
+# Proje Tematik Alanı
+**Algoritma Tasarımı ve Uygulamaları**
 
-**[span_0](start_span)Proje Ana Alanı:** Yazılım[span_0](end_span)  
-**[span_1](start_span)Proje Tematik Alanı:** Algoritma Tasarımı ve Uygulamaları[span_1](end_span)
+# Proje Adı (Başlığı)
+**Kullanıcı Etkileşimine Dayalı, Güvenlik Odaklı Otonom  
+Domain Doğrulama ve Yönlendirme**
+
+---
+
+## ÖZET
+
+İnternet kullanıcılarının web adreslerini (URL) hatalı yazması, siber güvenlik dünyasında **Typosquatting** olarak bilinen ciddi bir riske yol açmaktadır. Mevcut domain eşleştirme sistemleri, ya statik listelerle çalıştıkları için güncel tehditlere adapte olamamakta ya da sadece sayaç temelli çalıştıkları için öğrenme sürecinde zararlı (phishing) siteleri dâhil etme riski taşımaktadır.
+
+Bu proje, bu eksiklikleri gidermek amacıyla **otonom öğrenme yeteneğine sahip web tabanlı bir uygulama** sunmaktadır. Sistem, kullanıcı girdilerini **Levenshtein Mesafesi temelli benzerlik algoritması (fuzzywuzzy)** ile hızlıca tarar. Eğer yerel listelerde eşleşme bulunamazsa, dış kaynak (**Google API**) üzerinden öğrenme sürecini başlatır.
+
+Projenin temel özgünlüğü, **Kural Tabanlı Puanlama Algoritması** kullanmasıdır. Bu algoritma, domainin güvenlik katsayısı (TLD, Subdomain) ve benzerlik oranı gibi çoklu parametreleri değerlendirir. Böylece kötü niyetli domainlerin sisteme dâhil olması engellenir.
+
+Flask ile geliştirilen bu algoritma, performanstan ödün vermeden güvenliği önceliklendiren, sürekli gelişen bir çözüm sunmaktadır.
+
+**Anahtar Kelimeler:** Platform, Bağımsızlık, Kullanıcı Etkileşimli Gelişim, Sürdürülebilirlik
 
 ---
 
-## 1. Özet
-[span_2](start_span)[span_3](start_span)İnternet kullanıcılarının web adreslerini (URL) hatalı yazması (Typosquatting), ciddi bir risk oluşturmaktadır[span_2](end_span)[span_3](end_span). [span_4](start_span)Mevcut sistemler statik listelerle sınırlı kalırken veya zararlı siteleri öğrenme riski taşırken, bu proje otonom öğrenme yeteneğine sahip bir çözüm sunar[span_4](end_span). [span_5](start_span)Sistem, Levenshtein Mesafesi temelli benzerlik algoritması kullanır ve yerel eşleşme yoksa Google API üzerinden öğrenme sürecini başlatır[span_5](end_span). [span_6](start_span)Özgünlüğü, domainin güvenlik katsayısını (TLD, Subdomain) değerlendiren Ağırlıklı Puanlama Algoritması kullanmasıdır[span_6](end_span).
+## AMAÇ
 
-## 2. Amaç
-* **[span_7](start_span)Güvenlik Odaklı Karar Mekanizması:** Domainleri popülarite yerine TLD ve subdomain yapısı gibi kriterlere göre filtreleyerek phishing riskini minimize etmek[span_7](end_span).
-* **[span_8](start_span)Otonom ve Adaptif Öğrenme:** Kullanıcı etkileşimleri sayesinde veritabanını (domains.json) sürekli güncelleyerek internet ortamına adapte olmak[span_8](end_span).
-* **[span_9](start_span)Optimum Performans:** API kullanımını kısıtlayarak maliyeti düşürmek ve Flask tabanlı platform bağımsız bir servis sunmak[span_9](end_span).
+1. **Güvenlik Odaklı Karar Mekanizması Geliştirmek**  
+   Geleneksel mantıktan kaçınarak, öğrenme listesindeki domainleri **Kural Tabanlı Puanlama Algoritması** ile değerlendirmektir. Bu algoritma, bir domaini sadece popülaritesine göre değil; aynı zamanda **TLD uzantısı** ve **subdomain yapısı** gibi güvenlik kriterlerine göre filtreleyerek kötü niyetli (phishing) sitelerin ana listeye dâhil olma riskini minimize etmeyi amaçlar.
 
-## 3. Giriş
-[span_10](start_span)Typosquatting saldırıları, kullanıcılar için en büyük siber tehditlerden biridir[span_10](end_span). [span_11](start_span)Literatürde metin benzerlik algoritmaları (Levenshtein) standart kabul edilse de[span_11](end_span)[span_12](start_span)[span_13](start_span), sadece kelime benzerliğine odaklanılması ve TLD güvenilirliğinin göz ardı edilmesi bir eksikliktir[span_12](end_span)[span_13](end_span). [span_14](start_span)Bu proje, otonom ve hafif bir mimari ile bu boşluğu doldurmayı hedefler[span_14](end_span).
+2. **Otonom ve Adaptif Öğrenmeyi Sağlamak**  
+   Projenin statik bir veritabanına bağlı kalmamasını sağlamaktır. Kullanıcıların arama etkileşimleri sayesinde sistem, kendi veritabanını (`domains.json`) sürekli güncelleyerek değişen internet ortamına ve yeni çıkan domainlere karşı adaptasyon yeteneği kazanmayı hedefler.
 
-## 4. Yöntem
-[span_15](start_span)Projede Deneysel Yazılım Geliştirme Metodolojisi kullanılmıştır[span_15](end_span). 
-
-* **[span_16](start_span)Teknik Altyapı:** Python ve Flask üzerine inşa edilen sistem, dinamik JSON yapılarını kullanır[span_16](end_span). 
-* **[span_17](start_span)Veri Kaynağı:** Yerelde bulunmayan sorgular için Google Custom Search API ile gerçek zamanlı öğrenme sağlanır[span_17](end_span).
-* **[span_18](start_span)Algoritmalar:** * **Levenshtein Mesafesi:** Fuzzywuzzy kütüphanesi ile Ana Liste için %50, Öğrenme Listesi için %40 eşik değeri belirlenmiştir[span_18](end_span).
-    * **[span_19](start_span)Ağırlıklı Puanlama Algoritması:** TLD puanı (.edu, .gov +2; .com, .org +1), subdomain kontrolü (-1) ve kullanıcı teyidi (5 sorgu tetikleyicisi) kriterlerini içerir[span_19](end_span).
-
-## 5. Proje İş-Zaman Çizelgesi
-| İşin Adı | Nisan-Eylül | Ekim | Kasım | Aralık | Ocak |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| Literatür Taraması | | [span_20](start_span)X | X[span_20](end_span) | | |
-| Arazi Çalışması | | [span_21](start_span)X | | | |
-| Veri Analizi | X[span_21](end_span) | [span_22](start_span)X | X[span_22](end_span) | [span_23](start_span)X | |
-| Proje Raporu Yazımı | | | | X[span_23](end_span) | |
-
-## 6. Bulgular
-### Benzerlik Eşiği Analizi
-[span_24](start_span)200 adet yazım hatası senaryosu ile yapılan testlerde yüksek başarı oranları elde edilmiştir[span_24](end_span):
-* **[span_25](start_span)YouTube:** %99.00 başarı[span_25](end_span).
-* **[span_26](start_span)Facebook:** %98.00 başarı[span_26](end_span).
-
-### Otonom Öğrenme
-[span_27](start_span)[span_28](start_span)Sistem, bir domaini ilk kez Google API ile sorguladıktan sonra, 6. sorgu itibarıyla dış API bağımlılığını %0'a indirmiştir[span_27](end_span)[span_28](end_span). [span_29](start_span)[span_30](start_span)Bu, akıllı önbellekleme sayesinde kaynak verimliliği sağlamaktadır[span_29](end_span)[span_30](end_span).
-
-## 7. Sonuç ve Tartışma
-[span_31](start_span)Geliştirilen sistem, Levenshtein benzerlik eşiği testlerinde %98'in üzerinde başarı sergilemiştir[span_31](end_span). [span_32](start_span)TLD ve alt alan adı kontrollerinin sürece dahil edilmesi doğruluğu maksimize etmiştir[span_32](end_span). [span_33](start_span)Sistemin 6. sorguda dış bağlantıyı kesmesi, siber güvenlik araçlarındaki gecikme süresi (latency) sorununa hafif siklet bir çözüm sunmuştur[span_33](end_span).
-
-## 8. Öneriler
-* **[span_34](start_span)Eklenti Dönüşümü:** Sistemin bir Web Tarayıcı Eklentisi haline getirilerek phishing saldırılarının anlık engellenmesi[span_34](end_span).
-* **[span_35](start_span)Derin Öğrenme:** Gelecek çalışmalarda LSTM veya BERT gibi modellerle anlamsal sahtecilik analizlerinin yapılması[span_35](end_span).
+3. **Optimum Performans ve Erişim Sunmak**  
+   Dış kaynak (API) kullanımını yalnızca zorunlu hallerde tutarak sistem maliyetini düşürmek ve Flask tabanlı web mimarisi sayesinde projenin tüm cihazlardan erişilebilir, platform bağımsız bir servis haline gelmesini sağlamaktır.
 
 ---
-**[span_36](start_span)Kaynaklar:**[span_36](end_span)
-**[span_37](start_span)Ekler:** https://gist.github.com/Berlinxr/00716c94a64a7ceeb5998080c832660d[span_37](end_span)
+
+## 1. GİRİŞ
+
+İnternet güvenliği alanında yapılan güncel araştırmalar, alan adı benzerliklerine dayalı **Typosquatting (Klavye sürçmesi)** saldırılarının kullanıcılar ve kurumlar için en büyük siber tehditlerden biri olmaya devam ettiğini göstermektedir. Truong (2023) tarafından yapılan kapsamlı analizde, mevcut tarayıcı tabanlı önlemlerin statik kara listelere dayandığı ve dinamik olarak üretilen yeni saldırı türlerine karşı yetersiz kaldığı vurgulanmıştır.
+
+Literatürde bu sorunu çözmek için çeşitli metin benzerlik algoritmaları geliştirilmiştir. Spaulding ve Upadhyaya (2016), **Levenshtein Mesafesi** gibi yaklaşık metin eşleştirme yöntemlerinin typosquatting tespitinde temel standart olduğunu belirtmiştir. Ancak bu yöntemler çoğunlukla yalnızca kelime benzerliğine odaklanmakta, alan adının güvenilirliğini (TLD, SSL durumu vb.) göz ardı etmektedir.
+
+Son dönemde Welch (2025), tespit sistemlerinde öğrenme tabanlı modellerin (LLM ve makine öğrenmesi) kullanımının önemini vurgulamıştır. Ancak literatürde, hem Levenshtein benzerliğini hem de **alan adı uzantısı güvenilirliğini** puanlayan ve **kullanıcı etkileşimiyle kendi kendini güncelleyen hafif mimarili sistemler** konusunda bir boşluk bulunmaktadır. Bu proje, söz konusu boşluğu doldurmayı amaçlamaktadır.
+
+---
+
+## 2. YÖNTEM
+
+Bu projede, hatalı alan adlarını tespit edip doğrularını öneren web tabanlı bir prototip geliştirmek için **Deneysel Yazılım Geliştirme Metodolojisi** kullanılmıştır.
+
+### 2.1. Veri Toplama ve Kullanılan Araçlar
+
+Proje, **Python** programlama dili ve **Flask** web çatısı üzerinde inşa edilmiştir. Veri yönetimi için statik veritabanları yerine dinamik olarak güncellenen **JSON tabanlı yapı** (`domains.json`, `domains1.json`) tercih edilmiştir.
+
+Yerel veritabanında bulunmayan sorgular için **Google Custom Search API** kullanılarak gerçek zamanlı öğrenme süreci desteklenmiştir.
+
+Geliştirilen sistem, tarafımca yazılan Flask uygulaması üzerinde çalışmakta olup aşağıdaki adres üzerinden erişilebilmektedir:
+
+```
+https://system.onurepbaygun.icu
+```
+
+---
+
+### 2.2. Geliştirilen Algoritmalar
+
+#### 2.2.1. Benzerlik Tespiti (Levenshtein Mesafesi)
+
+Kullanıcı girdisi ile veritabanındaki kayıtlar arasındaki yapısal benzerlik, **fuzzywuzzy** kütüphanesi kullanılarak ölçülmüştür.
+
+- Ana Liste Eşiği: **%50**
+- Öğrenme Listesi Eşiği: **%40**
+
+#### 2.2.2. Kural Tabanlı Puanlama Algoritması
+
+Aday domainlerin güvenli listeye alınıp alınmayacağına karar vermek için çok kriterli bir puanlama fonksiyonu (`hesapla_puan`) geliştirilmiştir.
+
+**Puanlama Kriterleri:**
+
+- **TLD Puanı**
+  - `.com`, `.org`, `.net` → +1
+  - `.edu`, `.gov` → +2
+- **Subdomain Kontrolü**
+  - `www` dışındaki şüpheli alt alan adları → −1
+- **Kullanıcı Teyidi**
+  - Domainin **5 farklı kullanıcı** tarafından sorgulanması → tetikleyici
+
+#### 2.2.3. Karar Süreci
+
+- Önce yerel önbellek kontrol edilir  
+- Eşleşme yoksa API’den veri çekilir ve **Aday Liste**ye eklenir  
+- Tekrar sayısı **5** olan domainler puanlanır  
+- **Toplam puan ≥ 3** → Güvenli  
+- **Toplam puan < 3** → Sistemden temizlenir  
+
+---
+
+## 4. BULGULAR
+
+### 4.1. Benzerlik Eşiği Doğruluk Analizi
+
+Belirlenen **%50 Ana Liste Eşiği**, 486 yazım hatası senaryosu ile test edilmiştir.
+
+| Platform   | Deneme | Başarılı | Başarı (%) |
+|-----------|--------|----------|------------|
+| Instagram | 100    | 100      | 100.00     |
+| LinkedIn  | 86     | 86       | 100.00     |
+| TikTok    | 100    | 99       | 99.00      |
+| YouTube   | 100    | 99       | 99.00      |
+| Facebook  | 100    | 98       | 98.00      |
+
+---
+
+### 4.2. Otonom Öğrenme ve API Bağımlılığı
+
+Sistem, bir domain için **6. sorgudan itibaren** harici API çağrılarını tamamen sonlandırmış ve API bağımlılığı **%0** seviyesine düşmüştür. Bu durum, akıllı önbellekleme yaklaşımının başarıyla uygulandığını göstermektedir.
+
+---
+
+## 5. SONUÇ VE TARTIŞMA
+
+Bu proje, typosquatting saldırılarını yüksek doğrulukla tespit eden ve kullanıcı etkileşimiyle kendini güncelleyen **Otonom Öğrenen Domain Doğrulama Sistemi** geliştirilmesini kapsamaktadır.
+
+- **%98+ doğruluk**
+- **Harici API bağımlılığının kaldırılması**
+- **Hafif mimari ile yüksek güvenlik**
+
+Literatürde önerilen yaklaşımlarla uyumlu ve düşük kaynak tüketimli bir alternatif sunulmuştur.
+
+---
+
+## 6. ÖNERİLER
+
+### 6.1. Tarayıcı Eklentisi
+
+Sistemin bir **Browser Extension** olarak geliştirilmesiyle, kullanıcı siteye girmeden önce phishing saldırıları engellenebilir.
+
+### 6.2. Derin Öğrenme Entegrasyonu
+
+Gelecek çalışmalarda **LSTM** veya **BERT** tabanlı modellerle anlamsal domain sahteciliği tespiti yapılabilir.
